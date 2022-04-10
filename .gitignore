@@ -1,0 +1,8 @@
+node_modules
+data/*
+.env
+*.js
+
+
+# Excldue
+!data/README.md

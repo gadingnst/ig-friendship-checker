@@ -1,0 +1,27 @@
+{
+  "name": "ig-friendship-checker",
+  "version": "1.0.0",
+  "description": "✨ Bot that can check your Friendship on Instagram",
+  "main": "check.js",
+  "scripts": {
+    "start": "tsc && node check.js",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gadingnst/ig-friendship-checker.git"
+  },
+  "author": "Gading Nasution <contact@gading.dev>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gadingnst/ig-friendship-checker/issues"
+  },
+  "homepage": "https://github.com/gadingnst/ig-friendship-checker#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "instagram-private-api": "^1.45.3"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.3"
+  }
+}
