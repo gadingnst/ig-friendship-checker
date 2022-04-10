@@ -44,12 +44,12 @@ async function main() {
   ig.state.generateDevice(IG_USERNAME);
   await ig.simulate.preLoginFlow();
 
-  console.info('> Authenticating into your Instagram account...');
+  console.info(`> Authenticating into ${IG_USERNAME} account...`);
   const credentials = await ig.account.login(IG_USERNAME, IG_PASSWORD);
   const followersFeed = ig.feed.accountFollowers(credentials.pk);
   const followingFeed = ig.feed.accountFollowing(credentials.pk);
 
-  console.info('> Getting your followers/following concurrently...');
+  console.info('> Getting followers/following concurrently...');
   const [followers, following] = await Promise.all([
     getAllItemsFromFeed<AccountFollowersFeedResponseUsersItem>(followersFeed),
     getAllItemsFromFeed<AccountFollowingFeedResponseUsersItem>(followingFeed)
@@ -59,7 +59,7 @@ async function main() {
   const followerUsers = new Set(followers.map(({ username }) => username));
   const followingUsers = new Set(following.map(({ username }) => username));
 
-  console.info('> Checking your friendship...');
+  console.info('> Checking friendship...');
   const mutual = following.filter(({ username }) => followerUsers.has(username));
   const notFollowbackYou = following.filter(({ username }) => !followerUsers.has(username));
   const notGetYourFollowback = followers.filter(({ username }) => !followingUsers.has(username));
