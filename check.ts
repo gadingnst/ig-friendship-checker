@@ -60,6 +60,7 @@ async function main() {
   const followingUsers = new Set(following.map(({ username }) => username));
 
   console.info('> Checking your friendship...');
+  const mutual = following.filter(({ username }) => followerUsers.has(username));
   const notFollowbackYou = following.filter(({ username }) => !followerUsers.has(username));
   const notGetYourFollowback = followers.filter(({ username }) => !followingUsers.has(username));
 
@@ -67,11 +68,13 @@ async function main() {
   await Promise.all([
     storeJSON('./data/followers.json', followers),
     storeJSON('./data/following.json', following),
+    storeJSON('./data/mutual.json', mutual),
     storeJSON('./data/not-followback-you.json', notFollowbackYou),
     storeJSON('./data/not-get-your-followback.json', notGetYourFollowback)
   ]);
   console.info(`> Followers count: ${followers.length}`);
   console.info(`> Following count: ${following.length}`);
+  console.info(`> Mutual count: ${mutual.length}`);
   console.info(`> Not followback you count: ${notFollowbackYou.length}`);
   console.info(`> Not get your followback count: ${notGetYourFollowback.length}`);
   console.info('> Done!');
