@@ -1,10 +1,9 @@
 import Fs from 'fs/promises';
 import DotEnv from 'dotenv';
 import {
-  AccountFollowersFeed,
   AccountFollowersFeedResponseUsersItem,
-  AccountFollowingFeed,
   AccountFollowingFeedResponseUsersItem,
+  Feed,
   IgApiClient
 } from 'instagram-private-api';
 
@@ -15,25 +14,30 @@ const {
   IG_PASSWORD = ''
 } = process.env;
 
-async function getAllItemsFromFeed<T>(feed: AccountFollowersFeed|AccountFollowingFeed) {
-  /*
-    Getting all Following/Follower from available feed
-  */
+/**
+ * @see: https://github.com/dilame/instagram-private-api/issues/969#issuecomment-551436680
+ * @param feed
+ * @returns Promise<T[]> - T is the type of all feed items.
+ */
+async function getAllItemsFromFeed<T>(feed: Feed<any, T>) {
   let items: T[] = [];
 
   do {
     const feedItems = await feed.items();
-    items = items.concat(feedItems as any);
-  } while(feed.isMoreAvailable());
+    items = items.concat(feedItems);
+  } while (feed.isMoreAvailable());
 
   return items;
 }
 
+/**
+ * Store users data into a json file.
+ * Wanna to get detail of users? just pass the 'data' through JSON.stringify instead of 'mappedData'
+ * @param fileName
+ * @param data
+ * @returns Promise<void>
+*/
 function storeJSON(fileName: string, data: AccountFollowingFeedResponseUsersItem[]|AccountFollowersFeedResponseUsersItem[]) {
-  /*
-    Wanna to get detail of users?
-    just pass the 'data' through JSON.stringify instead of 'mappedData'
-  */
   const mappedData = data.map((user) => user.username);
   return Fs.writeFile(fileName, JSON.stringify(mappedData, null, 2));
 }
@@ -43,6 +47,8 @@ async function main() {
   const ig = new IgApiClient();
   ig.state.generateDevice(IG_USERNAME);
   await ig.simulate.preLoginFlow();
+
+  if (!IG_USERNAME || !IG_PASSWORD) throw new Error('`IG_USERNAME` or `IG_PASSWORD` must be set on `.env` file');
 
   console.info(`> Authenticating into ${IG_USERNAME} account...`);
   const credentials = await ig.account.login(IG_USERNAME, IG_PASSWORD);
