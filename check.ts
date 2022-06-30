@@ -42,6 +42,15 @@ function storeJSON(fileName: string, data: AccountFollowingFeedResponseUsersItem
   return Fs.writeFile(fileName, JSON.stringify(mappedData, null, 2));
 }
 
+/**
+ * delay the process for a while
+ * @param ms {number} - milliseconds for delay
+ * @returns Promise<void>
+ */
+async function delay(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 async function main() {
   console.info('> Setup Instagram Client...');
   const ig = new IgApiClient();
@@ -84,6 +93,15 @@ async function main() {
   console.info(`> Not followback you count: ${notFollowbackYou.length}`);
   console.info(`> Not get your followback count: ${notGetYourFollowback.length}`);
   console.info('> Done!');
+
+  // // Uncomment this code to automatically unfollow users who don't follow you back
+  // console.log('> Enable unfollowing users who don\'t follow you back...');
+  // for (const user of notFollowbackYou) {
+  //   await ig.friendship.destroy(user.pk);
+  //   console.log(`> Unfollowed ${user.username}`);
+  //   // delayed request for avoid too many request
+  //   await delay(500);
+  // }
 }
 
 main();
