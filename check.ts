@@ -1,8 +1,10 @@
 import Fs from 'fs/promises';
 import DotEnv from 'dotenv';
+import Prompt from 'prompt';
 import {
   AccountFollowersFeedResponseUsersItem,
   AccountFollowingFeedResponseUsersItem,
+  AccountRepositoryLoginResponseLogged_in_user,
   Feed,
   IgApiClient
 } from 'instagram-private-api';
@@ -60,7 +62,19 @@ async function main() {
   if (!IG_USERNAME || !IG_PASSWORD) throw new Error('`IG_USERNAME` or `IG_PASSWORD` must be set on `.env` file');
 
   console.info(`> Authenticating into ${IG_USERNAME} account...`);
-  const credentials = await ig.account.login(IG_USERNAME, IG_PASSWORD);
+  let credentials: AccountRepositoryLoginResponseLogged_in_user;
+
+  try {
+    credentials = await ig.account.login(IG_USERNAME, IG_PASSWORD);
+  } catch {
+    console.info('> Failed to login, setting up Two Factor Authentication...');
+    await ig.challenge.auto(true);
+    Prompt.start();
+    const { code } = await Prompt.get([{ name: 'code', description: 'SMS code', required: true }]);
+    await ig.challenge.sendSecurityCode(code.toString());
+    throw '> Two Factor Authentication settle up, now you can login again...';
+  }
+
   const followersFeed = ig.feed.accountFollowers(credentials.pk);
   const followingFeed = ig.feed.accountFollowing(credentials.pk);
 

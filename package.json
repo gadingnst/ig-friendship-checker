@@ -19,9 +19,11 @@
   "homepage": "https://github.com/gadingnst/ig-friendship-checker#readme",
   "dependencies": {
     "dotenv": "^16.0.0",
-    "instagram-private-api": "^1.45.3"
+    "instagram-private-api": "^1.45.3",
+    "prompt": "^1.3.0"
   },
   "devDependencies": {
+    "@types/prompt": "^1.1.2",
     "typescript": "^4.6.3"
   }
 }
