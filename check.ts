@@ -57,7 +57,7 @@ async function main() {
   console.info('> Setup Instagram Client...');
   const ig = new IgApiClient();
   ig.state.generateDevice(IG_USERNAME);
-  await ig.simulate.preLoginFlow();
+  await ig.simulate.preLoginFlow().catch(() => null);
 
   if (!IG_USERNAME || !IG_PASSWORD) throw new Error('`IG_USERNAME` or `IG_PASSWORD` must be set on `.env` file');
 
