@@ -3,6 +3,9 @@
 Bot that can check your friendship on Instagram.
 It can told you who are `your mutual`, `your following who don't follow you back`, and `your followers that you don't follow back.` 😂
 
+## Prerequisite
+- [NodeJS](https://nodejs.org/en/download)
+
 ## Getting Started
 - Fork/Clone [ig-friendship-checker](https://github.com/gadingnst/ig-friendship-checker.git) into your local machine.
 - Run `npm install` to install dependencies.
