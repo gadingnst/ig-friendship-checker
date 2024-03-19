@@ -109,6 +109,8 @@ async function main() {
   console.info('> Done!');
 
   // // Uncomment this code to automatically unfollow users who don't follow you back
+  // // If you activate this code, it's potential suspect activity, and your account might be Banned from Instagram
+  // // I suggest you to manually unfollow them.
   // console.log('> Enable unfollowing users who don\'t follow you back...');
   // for (const user of notFollowbackYou) {
   //   await ig.friendship.destroy(user.pk);
